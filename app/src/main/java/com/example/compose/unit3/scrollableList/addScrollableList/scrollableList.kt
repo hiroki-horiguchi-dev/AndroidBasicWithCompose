@@ -21,13 +21,13 @@ import com.example.compose.unit3.scrollableList.addScrollableList.model.Affirmat
 @Composable
 @Preview(showBackground = true)
 fun AffermationListpreview() {
-    AffirmationList(affirmationList = Datasource().loadAffirmations())
+    AffirmationList(affirmationList = ScrollableListDataSource().loadAffirmations())
 }
 
 @Composable
 @Preview(showBackground = true)
 fun preview() {
-    AffirmationCard(affirmation = Datasource().loadAffirmations()[0])
+    AffirmationCard(affirmation = ScrollableListDataSource().loadAffirmations()[0])
 }
 
 @Composable

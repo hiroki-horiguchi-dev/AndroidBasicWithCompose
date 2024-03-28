@@ -1,7 +1,7 @@
 import com.example.compose.R
 import com.example.compose.unit3.scrollableList.addScrollableList.model.Affirmation
 
-class Datasource() {
+class ScrollableListDataSource() {
     fun loadAffirmations(): List<Affirmation> {
         return listOf(
             Affirmation(R.string.affirmation1, R.drawable.image1),
