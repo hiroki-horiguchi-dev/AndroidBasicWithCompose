@@ -87,6 +87,7 @@ private val DarkColors = darkColorScheme(
 fun WoofTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
+    // ユーザーの壁紙に基づいてアプリのテーマを作成するかどうかフラグ、Android 12 over が必須
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
