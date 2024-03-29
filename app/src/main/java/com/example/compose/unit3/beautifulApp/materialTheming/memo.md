@@ -54,3 +54,41 @@ Row, Column, LazyColumn, LazyRow, Text, Image あたりは固有の役割がわ�
 
 フォント初期化
 別にこれは最後でいいや、もっと重要なことがたくさんある
+
+### トップバーを追加する
+
+Scaffold で topBar を追加できる、Flutter と似ている。
+呼び出しもと
+```kotlin
+    Scaffold(
+        topBar = { WoofTopAppBar() }
+    ) 
+```
+
+実装
+```kotlin
+@Composable
+fun WoofTopAppBar(modifier: Modifier = Modifier) {
+    CenterAlignedTopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(dimensionResource(id = R.dimen.image_size))
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
+                    painter = painterResource(R.drawable.ic_woof_logo),
+                    contentDescription = null
+                )
+                Text(
+                    // Font で設定したフォントになって表示されるよ、一旦飛ばしたので適応されていないよ
+                    text = "woof",
+                    style = MaterialTheme.typography.displayLarge
+                )
+            }
+        },
+        modifier = modifier
+    )
+}
+```
