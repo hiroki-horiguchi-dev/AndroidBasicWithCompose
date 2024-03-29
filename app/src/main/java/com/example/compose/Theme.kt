@@ -1,9 +1,10 @@
-package com.example.compose.ui.theme
+package com.example.compose
 
 import android.app.Activity
 import android.os.Build
 import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
@@ -13,10 +14,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
@@ -109,11 +110,18 @@ fun WoofTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        shapes = Shapes(),
+        shapes = Shapes,
         typography = Typography,
         content = content
     )
 }
+
+/// Shapes.kt をなぜか import できないのでこっちで定義
+val Shapes = Shapes(
+    /// 円形にできるやーつ
+    small = RoundedCornerShape(50.dp),
+    medium = RoundedCornerShape(bottomStart = 16.dp, topEnd = 16.dp)
+)
 
 /**
  * Sets up edge-to-edge for the window of this [view]. The system icon colors are set to either

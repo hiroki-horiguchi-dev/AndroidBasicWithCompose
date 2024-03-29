@@ -6,7 +6,7 @@
 ![img_2.png](img_2.png)
 タイポグラフィ
 
-### マテリアルテーマ設定
+### マテリアルテーマ設定と色の追加
 
 ![img_3.png](img_3.png)
 
@@ -23,3 +23,28 @@
 ![img_6.png](img_6.png)
 
 アプリへの導入方法
+
+### シェイプを追加する
+
+```kotlin
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
+
+val Shapes = Shapes(
+    small = RoundedCornerShape(50.dp),
+    medium = RoundedCornerShape(bottomStart = 16.dp, topEnd = 16.dp)
+)
+```
+こんな感じで定義
+
+![img_7.png](img_7.png)
+こういうこともできる
+
+![img_8.png](img_8.png)
+カードコンポーネントはサーフェスとして一つのコンポーザブルを含めることができて、修飾オプションも用意されているんだってさ
+枠線、シェイプなどを追加できる。
+
+Row, Column, LazyColumn, LazyRow, Text, Image あたりは固有の役割がわかりやすかった。
+だから、Card とか Surface とかの存在意義が謎だったが、要するに修飾するのに便利だよねって話なんだねと。
+
