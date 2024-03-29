@@ -48,3 +48,9 @@ val Shapes = Shapes(
 Row, Column, LazyColumn, LazyRow, Text, Image あたりは固有の役割がわかりやすかった。
 だから、Card とか Surface とかの存在意義が謎だったが、要するに修飾するのに便利だよねって話なんだねと。
 
+### タイプグラフィを追加する
+
+![img_9.png](img_9.png)
+
+フォント初期化
+別にこれは最後でいいや、もっと重要なことがたくさんある
