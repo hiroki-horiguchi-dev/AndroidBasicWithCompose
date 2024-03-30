@@ -12,5 +12,6 @@ onDestroy
 
 らへんのお話。
 画面回転すると再コンポーズされるから画面上の値が保持できないよって話。
-`remember` ではなく、`rememberSaveable` を使おうねって話。
-SavedInstanceState じゃないんだねえ、へ〜って感じ。以上。
+`remember` ではなく、`rememberSaveable` を使うと保持できるよって話。
+でも `viewModel` 使うなら `rememberSaveable` は不要だよな、、あと　`SavedInstanceState` じゃないんだねえ、へ〜って感じ。
+Log は Log.d とか使え、以上。
