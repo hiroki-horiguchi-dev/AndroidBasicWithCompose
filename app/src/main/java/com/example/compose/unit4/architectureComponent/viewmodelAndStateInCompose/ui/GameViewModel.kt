@@ -13,7 +13,9 @@ class GameViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
+    /// 出題する単語
     private lateinit var currentWord: String
+    // Set of words used in the game
     private var usedWords: MutableSet<String> = mutableSetOf()
 
     var userGuess by mutableStateOf("")
