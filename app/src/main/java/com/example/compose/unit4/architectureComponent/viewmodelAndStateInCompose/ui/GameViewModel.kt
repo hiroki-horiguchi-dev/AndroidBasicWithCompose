@@ -1,7 +1,11 @@
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class GameViewModel : ViewModel() {
 
@@ -12,8 +16,51 @@ class GameViewModel : ViewModel() {
     private lateinit var currentWord: String
     private var usedWords: MutableSet<String> = mutableSetOf()
 
+    var userGuess by mutableStateOf("")
+
     init {
         resetGame()
+    }
+
+    fun updateUserGuess(guessedWord: String){
+        userGuess = guessedWord
+    }
+
+    fun checkUserGuess() {
+        if (userGuess.equals(currentWord, ignoreCase = true)) {
+            // User's guess is correct, increase the score
+            // and call updateGameState() to prepare the game for next round
+            val updateScore = _uiState.value.score.plus(SCORE_INCREASE)
+            updateGameState(updatedScore = updateScore)
+        } else {
+            // User's guess is wrong, show an error
+            _uiState.update { currentState ->
+                currentState.copy(isGuessedWordWrong = true)
+            }
+        }
+        // Reset user guess
+        updateUserGuess("")
+    }
+
+    fun resetGame() {
+        usedWords.clear()
+        _uiState.value = GameUiState(currentScrambledWord = pickRandomWordAndShuffle())
+    }
+
+    fun skipWord() {
+        updateGameState(_uiState.value.score)
+        updateUserGuess("")
+    }
+
+    private fun updateGameState(updatedScore: Int) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isGuessedWordWrong = false,
+                currentWordCount = currentState.currentWordCount.inc(),
+                currentScrambledWord = pickRandomWordAndShuffle(),
+                score = updatedScore
+            )
+        }
     }
 
     private fun pickRandomWordAndShuffle(): String {
@@ -35,10 +82,5 @@ class GameViewModel : ViewModel() {
             tempWord.shuffle()
         }
         return String(tempWord)
-    }
-
-    fun resetGame() {
-        usedWords.clear()
-        _uiState.value = GameUiState(currentScrambledWord = pickRandomWordAndShuffle())
     }
 }
