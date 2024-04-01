@@ -20,3 +20,9 @@
 
 WordData.kt をコピーした時の面白い関数見つけた
 ![img_1.png](img_1.png)
+
+### ダイアログ
+
+![img_2.png](img_2.png)
+
+↑構造

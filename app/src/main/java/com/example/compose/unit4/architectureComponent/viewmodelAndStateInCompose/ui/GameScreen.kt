@@ -15,7 +15,6 @@
  */
 package com.example.compose.unit4.architectureComponent.viewmodelAndStateInCompose.ui
 
-import GameUiState
 import GameViewModel
 import android.app.Activity
 import androidx.compose.foundation.background
@@ -122,6 +121,13 @@ fun GameScreen(
             }
         }
 
+        if (gameUiState.isGameOver) {
+            FinalScoreDialog(
+                score = gameUiState.score,
+                onPlayAgain = { gameViewModel.resetGame() }
+            )
+        }
+
         GameStatus(score = gameUiState.score, modifier = Modifier.padding(20.dp))
     }
 }
@@ -148,7 +154,8 @@ fun GameLayout(
     onUserGuessChanged: (String) -> Unit,
     onKeyboardDone: () -> Unit,
     wordCount: Int,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
 
     Card(
@@ -166,7 +173,7 @@ fun GameLayout(
                     .background(colorScheme.surfaceTint)
                     .padding(horizontal = 10.dp, vertical = 4.dp)
                     .align(alignment = Alignment.End),
-                text = stringResource(R.string.word_count, 0),
+                text = stringResource(R.string.word_count, wordCount),
                 style = typography.titleMedium,
                 color = colorScheme.onPrimary
             )
@@ -192,11 +199,11 @@ fun GameLayout(
                 ),
                 onValueChange = onUserGuessChanged,
                 label = {
-                        if (isGuessWrong) {
-                            Text(text = stringResource(id = R.string.wrong_guess))
-                        } else {
-                            Text(text = stringResource(id = R.string.enter_your_word))
-                        }
+                    if (isGuessWrong) {
+                        Text(text = stringResource(id = R.string.wrong_guess))
+                    } else {
+                        Text(text = stringResource(id = R.string.enter_your_word))
+                    }
                 },
                 isError = isGuessWrong,
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -251,4 +258,14 @@ private fun FinalScoreDialog(
 @Composable
 fun GameScreenPreview() {
     GameScreen()
+}
+
+@Preview
+@Composable
+fun DialogPreview() {
+    /// preview 出せないんだけどなんでだ？？？
+    FinalScoreDialog(
+        score = 100,
+        {}
+    )
 }
