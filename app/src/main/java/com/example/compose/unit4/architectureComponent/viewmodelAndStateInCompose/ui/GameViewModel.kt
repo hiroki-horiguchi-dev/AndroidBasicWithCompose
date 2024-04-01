@@ -5,17 +5,16 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class GameViewModel : ViewModel() {
 
-    /// 愚直に書くと、Compose の方で viewModel を初期化した時、usedWords: Set がぬるぽで落ちるんだけれども。。
-    init {
-        // resetGame()
-    }
-
     /// state
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     private lateinit var currentWord: String
     private var usedWords: MutableSet<String> = mutableSetOf()
+
+    init {
+        resetGame()
+    }
 
     private fun pickRandomWordAndShuffle(): String {
         // Continue picking up a new random word until you get one that hasn't been used before
