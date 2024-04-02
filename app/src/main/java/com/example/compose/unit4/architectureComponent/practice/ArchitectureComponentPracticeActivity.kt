@@ -1,5 +1,4 @@
 
-import Datasource.dessertList
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -38,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,9 +69,7 @@ class ArchitectureComponentPracticeActivity : ComponentActivity() {
                         .fillMaxSize()
                         .statusBarsPadding(),
                 ) {
-                    DessertClickerApp(
-                    desserts = dessertList
-                    )
+                    DessertClickerApp()
                 }
             }
         }
@@ -106,13 +104,26 @@ private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: I
     }
 }
 
+@Composable
+private fun DessertClickerApp(
+    /// 一個噛ませて ViewModel と state を準備
+    viewModel: ArchitectureComponentPracticeViewModel = viewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    /// 同名の関数をコンストラクタ引数違いで定義して呼び出し
+    DessertClickerApp(
+        state = uiState,
+        onDessertClicked = viewModel::onDessertClicked
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DessertClickerApp(
-    desserts: List<Dessert>
+    state: ArchitectureComponentPracticeState,
+    onDessertClicked: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val viewModel: ArchitectureComponentPracticeViewModel = viewModel()
-    val state = viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -122,8 +133,8 @@ private fun DessertClickerApp(
                 onShareButtonClicked = {
                     shareSoldDessertsInformation(
                         intentContext = intentContext,
-                        dessertsSold = state.value.dessertSold,
-                        revenue = state.value.revenue
+                        dessertsSold = state.dessertSold,
+                        revenue = state.revenue
                     )
                 },
                 modifier = Modifier
@@ -141,17 +152,10 @@ private fun DessertClickerApp(
         }
     ) { contentPadding ->
         DessertClickerScreen(
-            revenue = state.value.revenue,
-            dessertsSold = state.value.dessertSold,
-            dessertImageId = state.value.currentDessertImageId,
-            onDessertClicked = {
-
-                // Update the revenue
-                viewModel.updateRevenue()
-
-                // Show the next dessert
-                viewModel.determinDessertToShow(desserts, state.value.dessertSold)
-            },
+            revenue = state.revenue,
+            dessertsSold = state.dessertSold,
+            dessertImageId = state.currentDessertImageId,
+            onDessertClicked = onDessertClicked,
             modifier = Modifier.padding(contentPadding)
         )
     }
@@ -291,6 +295,6 @@ private fun DessertsSoldInfo(dessertsSold: Int, modifier: Modifier = Modifier) {
 @Composable
 fun MyDessertClickerAppPreview() {
     MaterialTheme {
-        DessertClickerApp(desserts = dessertList)
+        DessertClickerApp()
     }
 }
