@@ -27,3 +27,8 @@ ViewModel() 自体が Compose 関数なので。
 - determineDessertIndex() をクリックイベントが起きるたびに毎回叩くのはいかがなものか？と思った
   - それなら、State にデザートの amount を保存しておいて、それを ViewModel から参照して余計に叩かなくて済むようにしない？
   - 次のコミットで修正してみる
+  - と思ったけど本質とズレるのでやめた
+    - State で デザートのamount を index が変わるタイミングで加算する
+    - 購入数と比較して、加算した値未満であれば determinDessertIndex() を叩かない
+    - にすれば、計算量が減る
+  - 以上！
