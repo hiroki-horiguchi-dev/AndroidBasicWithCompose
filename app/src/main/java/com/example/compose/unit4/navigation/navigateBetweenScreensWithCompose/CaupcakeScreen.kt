@@ -87,16 +87,16 @@ fun CupcakeApp(
             }
             composable(route = CupcakeScreen.Flavor.name) {
                 val context = LocalContext.current
-                SelectFlavorScreen(
-                    subTotal = uiState.price,
+                SelectOptionScreen(
+                    subtotal = uiState.price,
                     options = CupcakeDataSource.flavors.map { id -> context.resources.getString(id) },
                     onSelectionChanged = { viewModel.setFlavor(it) },
                     modifier = Modifier.fillMaxHeight()
                 )
             }
             composable(route = CupcakeScreen.Pickup.name) {
-                SelectFlavorScreen(
-                    subTotal = uiState.price,
+                SelectOptionScreen(
+                    subtotal = uiState.price,
                     options = uiState.pickupOptions,
                     onSelectionChanged = { viewModel.setDate(it) },
                     modifier = Modifier.fillMaxHeight()
