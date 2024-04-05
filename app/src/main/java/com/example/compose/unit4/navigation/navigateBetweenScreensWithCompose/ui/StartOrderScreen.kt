@@ -32,6 +32,7 @@ import com.example.compose.R
 @Composable
 fun StartOrderScreen(
     quantityOptions: List<Pair<Int, Int>>,
+    onNextButtonClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -66,7 +67,7 @@ fun StartOrderScreen(
             quantityOptions.forEach { item ->
                 SelectQuantityButton(
                     labelResourceId = item.first,
-                    onClick = {}
+                    onClick = {onNextButtonClicked(item.second)}
                 )
             }
         }
@@ -96,6 +97,7 @@ fun SelectQuantityButton(
 fun StartOrderPreview() {
     StartOrderScreen(
         quantityOptions = CupcakeDataSource.quantityOptions,
+        onNextButtonClicked = {},
         modifier = Modifier
             .fillMaxSize()
             .padding(dimensionResource(R.dimen.padding_medium))
