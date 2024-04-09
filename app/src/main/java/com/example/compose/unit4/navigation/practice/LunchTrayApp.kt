@@ -46,3 +46,11 @@ fun LunchTrayApp() {
         println(innerPadding)
     }
 }
+
+enum class LunchTrayScreen {
+    START,
+    MAIN_MENU,
+    SUB_MENU,
+    OPTION_MENU,
+    PURCHASE
+}
