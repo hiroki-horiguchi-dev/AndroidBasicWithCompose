@@ -24,6 +24,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.unit4.navigation.practice.ui.OrderViewModel
 
 // TODO: Screen enum
+enum class LunchTrayScreen {
+    START,
+    MAIN_MENU,
+    SUB_MENU,
+    OPTION_MENU,
+    PURCHASE
+}
 
 // TODO: AppBar
 
