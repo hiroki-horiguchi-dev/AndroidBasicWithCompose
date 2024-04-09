@@ -17,6 +17,8 @@ package com.example.compose.unit4.navigation.practice.model
 
 import java.text.NumberFormat
 
+/// 復習: sealed 修飾子はこのファイル内でないと MenuItem を継承できないようにするよってこと
+/// API のモデルとしていいよねこの考え方。少しだけパラメータ違う時とかにこれ使いたいね。
 sealed class MenuItem(
     open val name: String,
     open val description: String,

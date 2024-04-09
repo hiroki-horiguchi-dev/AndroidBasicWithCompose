@@ -43,7 +43,7 @@ fun AccompanimentMenuScreen(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AccompanimentMenuPreview(){
     AccompanimentMenuScreen(
