@@ -16,6 +16,7 @@
 package com.example.compose.unit4.navigation.practice
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,10 +37,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
+import com.example.compose.ui.theme.WoofTheme
+import com.example.compose.unit4.navigation.practice.datasource.NavigationDataSource
+import com.example.compose.unit4.navigation.practice.ui.AccompanimentMenuScreen
+import com.example.compose.unit4.navigation.practice.ui.CheckoutScreen
+import com.example.compose.unit4.navigation.practice.ui.EntreeMenuScreen
 import com.example.compose.unit4.navigation.practice.ui.OrderViewModel
+import com.example.compose.unit4.navigation.practice.ui.SideDishMenuScreen
+import com.example.compose.unit4.navigation.practice.ui.StartOrderScreen
 
 // TODO: Screen enum
 enum class LunchTrayScreen(@StringRes val title: Int) {
@@ -69,7 +78,7 @@ fun LunchTrayAppBar(
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                       imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.back_button)
                     )
                 }
@@ -81,8 +90,6 @@ fun LunchTrayAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LunchTrayApp() {
-    // TODO: Create Controller and initialization
-
     // Create ViewModel
     val viewModel: OrderViewModel = viewModel()
     // Create NavController
@@ -110,10 +117,70 @@ fun LunchTrayApp() {
         NavHost(
             navController = navController,
             startDestination = LunchTrayScreen.START.name,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding).fillMaxSize()
         ) {
+            composable(route = LunchTrayScreen.START.name) {
+                StartOrderScreen(onStartOrderButtonClicked = {
+                    navController.navigate(LunchTrayScreen.MAIN_MENU.name)
+                })
+            }
+            composable(route = LunchTrayScreen.MAIN_MENU.name) {
+                EntreeMenuScreen(
+                    options = NavigationDataSource.entreeMenuItems,
+                    onCancelButtonClicked = { onCanselButtonClicked(viewModel = viewModel, navController = navController) },
+                    onNextButtonClicked = {
+                        navController.navigate(LunchTrayScreen.SUB_MENU.name)
+                    },
+                    onSelectionChanged = {
+                        /// State の変更は選択された時にしろってメッセージを感じたぞ。
+                        viewModel.updateEntree(it)
+                    }
+                )
+            }
+            composable(route = LunchTrayScreen.SUB_MENU.name) {
+                SideDishMenuScreen(
+                    options = NavigationDataSource.sideDishMenuItems,
+                    onCancelButtonClicked = { onCanselButtonClicked(viewModel = viewModel, navController = navController) },
+                    onNextButtonClicked = {
+                        navController.navigate(LunchTrayScreen.OPTION_MENU.name)
+                    },
+                    onSelectionChanged = { sideDishItem ->
+                        viewModel.updateSideDish(sideDishItem)
+                    }
+                )
+            }
+            composable(route = LunchTrayScreen.OPTION_MENU.name) {
+                AccompanimentMenuScreen(
+                    options = NavigationDataSource.accompanimentMenuItems,
+                    onCancelButtonClicked = { onCanselButtonClicked(viewModel = viewModel, navController = navController) },
+                    onNextButtonClicked = {
+                        navController.navigate(LunchTrayScreen.PURCHASE.name)
+                    },
+                    onSelectionChanged = { accompanimentItem ->
+                        viewModel.updateAccompaniment(accompanimentItem)
+                    }
+                )
+            }
+            composable(route = LunchTrayScreen.PURCHASE.name) {
+                CheckoutScreen(
+                    orderUiState = uiState,
+                    onNextButtonClicked = {
+                        navController.navigate(LunchTrayScreen.START.name)
+                    },
+                    onCancelButtonClicked = { onCanselButtonClicked(viewModel = viewModel, navController = navController) },
+                )
+            }
+
         }
     }
+}
+
+private fun onCanselButtonClicked(
+    viewModel: OrderViewModel,
+    navController: NavHostController
+) {
+    viewModel.resetOrder()
+    navController.popBackStack(LunchTrayScreen.START.name, inclusive = false)
 }
 
 @Preview(showBackground = true)
@@ -134,4 +201,12 @@ fun `メインメニューのプレビュー`() {
         canNavigateBack = true,
         navigateUp = {}
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LunchTrayScreenPreview() {
+    WoofTheme {
+        LunchTrayApp()
+    }
 }
