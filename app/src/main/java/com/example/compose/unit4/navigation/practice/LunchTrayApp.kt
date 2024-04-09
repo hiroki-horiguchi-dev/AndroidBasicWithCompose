@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.R
 import com.example.compose.unit4.navigation.practice.ui.OrderViewModel
@@ -87,9 +88,20 @@ fun LunchTrayApp() {
     // Create NavController
     val navController: NavHostController = rememberNavController()
 
+    // スタックの state を取得
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    // スタックに登録した route を LunchTrayScreen として currentScreen へ代入
+    val currentScreen = LunchTrayScreen.valueOf(
+        backStackEntry?.destination?.route ?: LunchTrayScreen.START.name
+    )
+
     Scaffold(
         topBar = {
-            // TODO: AppBar
+            LunchTrayAppBar(
+                currentScreen = currentScreen,
+                // navController の スタックを確認して何かあれば back key を表示するフラグ
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() })
         }
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
