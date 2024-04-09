@@ -123,6 +123,7 @@
     </plurals>
 
     /// Navigation practice
+    <string name="navigation_home_screen">Lunch Tray</string>
     <string name="navigation_practice_back_button">Back</string>
     <string name="choose_accompaniment">Choose Accompaniment</string>
     <string name="choose_entree">Choose Entree</string>

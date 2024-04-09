@@ -15,29 +15,67 @@
  */
 package com.example.compose.unit4.navigation.practice
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.R
 import com.example.compose.unit4.navigation.practice.ui.OrderViewModel
 
 // TODO: Screen enum
-enum class LunchTrayScreen {
-    START,
-    MAIN_MENU,
-    SUB_MENU,
-    OPTION_MENU,
-    PURCHASE
+enum class LunchTrayScreen(@StringRes val title: Int) {
+    START(title = R.string.navigation_home_screen),
+    MAIN_MENU(title = R.string.choose_entree),
+    SUB_MENU(title = R.string.choose_side_dish),
+    OPTION_MENU(title = R.string.choose_accompaniment),
+    PURCHASE(title = R.string.order_checkout)
 }
 
 // TODO: AppBar
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LunchTrayAppBar(
+    currentScreen: LunchTrayScreen,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = stringResource(id = currentScreen.title)) },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        modifier = modifier,
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                       imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back_button)
+                    )
+                }
+            }
+        }
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,4 +102,24 @@ fun LunchTrayApp() {
         ) {
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun `ホーム画面のプレビュー`() {
+    LunchTrayAppBar(
+        currentScreen = LunchTrayScreen.START,
+        canNavigateBack = false,
+        navigateUp = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun `メインメニューのプレビュー`() {
+    LunchTrayAppBar(
+        currentScreen = LunchTrayScreen.MAIN_MENU,
+        canNavigateBack = true,
+        navigateUp = {}
+    )
 }
