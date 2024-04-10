@@ -89,11 +89,10 @@ fun LunchTrayAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LunchTrayApp() {
-    // Create ViewModel
-    val viewModel: OrderViewModel = viewModel()
-    // Create NavController
-    val navController: NavHostController = rememberNavController()
+fun LunchTrayApp(
+    viewModel: OrderViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
+) {
 
     // スタックの state を取得
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -117,7 +116,9 @@ fun LunchTrayApp() {
         NavHost(
             navController = navController,
             startDestination = LunchTrayScreen.START.name,
-            modifier = Modifier.padding(innerPadding).fillMaxSize()
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         ) {
             composable(route = LunchTrayScreen.START.name) {
                 StartOrderScreen(onStartOrderButtonClicked = {
