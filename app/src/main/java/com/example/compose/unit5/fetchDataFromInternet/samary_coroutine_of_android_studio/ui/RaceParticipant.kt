@@ -15,9 +15,11 @@
  */
 package com.example.compose.unit5.fetchDataFromInternet.samary_coroutine_of_android_studio.ui
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 /**
@@ -42,9 +44,14 @@ class RaceParticipant(
         private set
 
     suspend fun run() {
-        while (currentProgress < maxProgress) {
-            delay(progressDelayMillis)
-            currentProgress += progressIncrement
+        try {
+            while (currentProgress < maxProgress) {
+                delay(progressDelayMillis)
+                currentProgress += progressIncrement
+            }
+        } catch (e: CancellationException) {
+            Log.d("RaceParticipants", e.toString())
+            throw e
         }
     }
 
