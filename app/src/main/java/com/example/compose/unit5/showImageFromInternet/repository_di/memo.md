@@ -19,3 +19,11 @@ Data Layer の構成要素
 ![img_2.png](img_2.png)
 
 
+#### データレイヤの追加
+
+![img_3.png](img_3.png)
+
+ViewModel で data に直接アクセスするのではなく、Repository を介しただけ。
+
+![img_4.png](img_4.png)
+
