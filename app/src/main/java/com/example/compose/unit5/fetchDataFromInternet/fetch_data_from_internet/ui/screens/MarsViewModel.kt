@@ -16,6 +16,7 @@
 package com.example.compose.unit5.fetchDataFromInternet.fetch_data_from_internet.ui.screens
 
 import MarsApi
+import MarsPhoto
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,7 +46,9 @@ class MarsViewModel : ViewModel() {
         viewModelScope.launch {
             marsUiState = try {
                 val listResult = MarsApi.retrofitService.getPhotos()
-                MarsUiState.Success(listResult)
+                MarsUiState.Success(
+                    "Success: ${listResult.size} Mars photos retrieved"
+                )
             } catch (e: IOException) {
                 MarsUiState.Error
             }
