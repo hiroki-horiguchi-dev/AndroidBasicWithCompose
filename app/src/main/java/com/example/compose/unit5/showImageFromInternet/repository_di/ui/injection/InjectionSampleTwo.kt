@@ -30,6 +30,7 @@ fun main() {
     val car = Car(engine)
     car.start()
 
+    /// 新しい処理を実装したとしても、Car を編集する必要がない点がインスタンスを外部から入れる利点があるね
     val electricEngine = ElectricEngine()
     val electricCar = Car(electricEngine)
     electricCar.start()
