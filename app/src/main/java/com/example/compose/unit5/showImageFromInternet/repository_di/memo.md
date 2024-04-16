@@ -191,5 +191,86 @@ class User(val name: String) {
 あんまりメリットが分かってなかったので再認識しとこう。
 
 
+### Repository のテスト
+今回の Codelab における Repository の役割は、API を叩いて値を返却すること。なので、
+叩く API の処理と叩いた結果をフェイクにすり替えてテストするっていうのがやりたいこと。
+
+```kotlin
+class NetworkMarsRepositoryTest {
+
+    @Test
+    fun networkMarsPhotosRepository_getMarsPhotos_verifyPhotoList() = runTest {
+        val repository = NetworkMarsPhotosRepository(
+            marsApiService = FakeMarsApiService()
+        )
+        assertEquals(FakeDataSource.photosList, repository.getMarsPhotos())
+    }
+
+}
+```
+
+### ViewModel のテスト
+
+```kotlin
+    @Test
+    fun marsViewModel_getMarsPhotos_verifyMarsUiStateSuccess() =
+        runTest{
+            /// ViewModel に FakeRepository を与えると、init で FakeRepository.getPhotos() を呼んでくれる
+            /// FakeRepository の getPhotos() は FakeDataSource.photoList を返す
+            /// なので assertEquals の expected は FakeDataSource.photoList のサイズと同じはずなので、
+            /// expected が以下のようになるよ
+            val marsViewModel = MarsViewModel(
+                marsPhotosRepository = FakeNetworkMarsPhotosRepository()
+            )
+            assertEquals(
+                MarsUiState.Success("Success: ${FakeDataSource.photosList.size} Mars " +
+                        "photos retrieved"),
+                marsViewModel.marsUiState
+            )
+        }
+```
+
+これで良さそうに見えるけど、実行すると転けるよ。
+なんでかっていうと、子ルーチンスコープのディスパッチャが ViewModel だと Main ディスパッチャで、単体テストは Main ディスパッチャに対応してないからだよ。
+あれ、ViewModel って Main(UI) スレッドで叩いてるんだっけ。。？やばくね？
+
+![img_18.png](img_18.png)
 
 
+#### テストディスパッチャを作成しよう
+
+![img_19.png](img_19.png)
+
+![img_20.png](img_20.png)
+
+rule を作ろう、ここでいうルールはテストで runTest を使う時のディスパッチャを Main に設定しようってことね
+![img_21.png](img_21.png)
+
+#### ViewModel のテスト(続き)
+
+```kotlin
+class MarsViewModelTest {
+    @get:Rule
+    val testDispatcher = TestDispatcherRule()
+
+    @Test
+    fun marsViewModel_getMarsPhotos_verifyMarsUiStateSuccess() =
+        runTest{
+            /// ViewModel に FakeRepository を与えると、init で FakeRepository.getPhotos() を呼んでくれる
+            /// FakeRepository の getPhotos() は FakeDataSource.photoList を返す
+            /// なので assertEquals の expected は FakeDataSource.photoList のサイズと同じはずなので、
+            /// expected が以下のようになるよ
+            val marsViewModel = MarsViewModel(
+                marsPhotosRepository = FakeNetworkMarsPhotosRepository()
+            )
+            assertEquals(
+                MarsUiState.Success("Success: ${FakeDataSource.photosList.size} Mars " +
+                        "photos retrieved"),
+                marsViewModel.marsUiState
+            )
+        }
+}
+```
+これで testDispatcher を定義すると、ディスパッチャを Main に移せるのでテストが成功する。
+
+![img_22.png](img_22.png)
