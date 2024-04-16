@@ -2,23 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="MarsAppPreview">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$PROJECT_DIR$/../.android/avd/Pixel_7_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-16T07:15:35.103143Z" />
-        </State>
+      <entry key="MainActivity">
+        <State />
       </entry>
-      <entry key="PreviewMarsApp (1)">
+      <entry key="MarsPhotoCoilActivity">
+        <State />
+      </entry>
+      <entry key="PreviewMarsCoilApp">
         <State />
       </entry>
     </value>

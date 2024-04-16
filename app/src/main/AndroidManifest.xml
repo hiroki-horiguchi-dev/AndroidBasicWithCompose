@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Compose"
         tools:targetApi="31"
-        android:name=".unit5.showImageFromInternet.repository_di.MarsPhotosApplication">
+        android:name=".unit5.showImageFromInternet.show_image.MarsPhotosApplication">
+<!--        android:name の宣言は一つのプロジェクトで1つしかできないっぽいので都度書き換えるしかないか。。-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
