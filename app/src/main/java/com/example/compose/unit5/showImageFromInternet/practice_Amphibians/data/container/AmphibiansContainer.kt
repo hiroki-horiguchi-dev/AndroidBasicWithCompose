@@ -4,6 +4,10 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+
+/// この interface は、同じドメインの中で複数種類がある場合、それらを場合分けしてあげるのに適している
+/// その都度、Repository と、Service クラスを作る必要はある
+/// そのために、Repository, network パッケージの中で更にパッケージに分けると更にわかりやすいかな！
 interface AmphibiansContainer {
     val amphibiansRepository: AmphibiansRepository
 }

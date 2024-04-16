@@ -18,7 +18,6 @@ class NetworkAmphibiansRepository(
     override suspend fun putNewAmphibians() {
         TODO("Example. @PUT")
     }
-
     override suspend fun deleteAmphibians() {
         TODO("Example. @DELETE")
     }
