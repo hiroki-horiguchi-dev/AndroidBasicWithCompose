@@ -47,3 +47,149 @@ ElectricEngine が追加で必要な場合、ElectricEngine のインスタン�
 ![img_9.png](img_9.png)
 
 言いたいことはなんとなくわかるけど、言葉だと的をえないのでコードみる。
+
+#### DI とは
+
+DI とは、呼び出し元クラスにハードコードされるのではなく、実行時に依存関係を提供することを指します。
+
+![img_11.png](img_11.png)
+
+これ忘れそうになったら、ui/injection にある injectionSample を見てね
+
+
+#### コンテナとは
+
+![img_12.png](img_12.png)
+
+以下の例のミソは2つ
+- Application クラスを継承した MyApplication クラスで Data Layer とのやりとりを一元化する appContainer 変数を作成して、public で公開する
+  - Data Layer と UI Layer のやりとりをする上でファサード(またはインターフェース)になっているかんじ
+- 全ての UI Layer (ViewModel or UseCase) から API 通信処理、DB 処理を呼ぶことができ、実際の処理は Repository がカプセル化している
+
+```kotlin
+// Container of objects shared across the whole app
+class AppContainer {
+
+    // Since you want to expose userRepository out of the container, you need to satisfy
+    // its dependencies as you did before
+    private val retrofit = Retrofit.Builder()
+                            .baseUrl("https://example.com")
+                            .build()
+                            .create(LoginService::class.java)
+
+    private val remoteDataSource = UserRemoteDataSource(retrofit)
+    private val localDataSource = UserLocalDataSource()
+
+    // userRepository is not private; it'll be exposed
+    val userRepository = UserRepository(localDataSource, remoteDataSource)
+}
+```
+
+```kotlin
+// Custom Application class that needs to be specified
+// in the AndroidManifest.xml file
+class MyApplication : Application() {
+
+    // Instance of AppContainer that will be used by all the Activities of the app
+    val appContainer = AppContainer()
+}
+```
+
+![img_13.png](img_13.png)
+
+実際に UI Layer から叩く方法ね
+
+```kotlin
+class LoginActivity: Activity() {
+
+    private lateinit var loginViewModel: LoginViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Gets userRepository from the instance of AppContainer in Application
+        val appContainer = (application as MyApplication).appContainer
+        loginViewModel = LoginViewModel(appContainer.userRepository)
+    }
+}
+```
+
+こうやって Activity で ViewModel のインスタンスを生成するときに MyApplication の appContainer を渡して ViewModel で通信処理をする時に使う
+
+ViewModel はこう実装してあげれば良い
+
+```kotlin
+// Definition of a Factory interface with a function to create objects of a type
+interface Factory<T> {
+    fun create(): T
+}
+
+// Factory for LoginViewModel.
+// Since LoginViewModel depends on UserRepository, in order to create instances of
+// LoginViewModel, you need an instance of UserRepository that you pass as a parameter.
+class LoginViewModelFactory(private val userRepository: UserRepository) : Factory
+```
+
+Factory を実装するとなんやよくわからんけど、これで ViewModel に引数を渡すことができるみたいだ、原理は不明。。。謎い、、むずむずする。。
+
+AppContainer への実装方法と Activity からの呼び出し方法は以下
+
+```kotlin
+// AppContainer can now provide instances of LoginViewModel with LoginViewModelFactory
+class AppContainer {
+    ...
+    val userRepository = UserRepository(localDataSource, remoteDataSource)
+
+    val loginViewModelFactory = LoginViewModelFactory(userRepository)
+}
+
+class LoginActivity: Activity() {
+
+    private lateinit var loginViewModel: LoginViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Gets LoginViewModelFactory from the application instance of AppContainer
+        // to create a new LoginViewModel instance
+        val appContainer = (application as MyApplication).appContainer
+        loginViewModel = appContainer.loginViewModelFactory.create()
+    }
+}
+```
+
+#### 注意点
+
+![img_14.png](img_14.png)
+
+これを解決するのが Dagger Hilt ってことなのかねえ。。
+
+#### ViewModel に引数が渡せない？！
+
+![img_15.png](img_15.png)
+
+![img_16.png](img_16.png)
+
+#### ファクトリーパターンの復習
+[KotlinにおけるFactoryメソッドの実装パターン](https://qiita.com/doyaaaaaken/items/0c99da9efa7d724a0d80)
+- クラスのインスタンス生成にはコンストラクタより Factory メソッドのがいいよ
+- Kotlin だと書き方色々あるよ
+- 大抵のケースで良いのは Companion Object で Factory メソッドをそれっぽい名前で実装する方法
+
+![img_17.png](img_17.png)
+
+```kotlin
+class User(val name: String) {
+    companion object {
+        fun from(name: String): User {
+            return User(name)
+        }
+    }
+}
+```
+あ〜、これね。はいはい。Fragment のインスタンス作る時に Factory やってたわ。
+あんまりメリットが分かってなかったので再認識しとこう。
+
+
+
+

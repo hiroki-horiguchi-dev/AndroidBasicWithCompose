@@ -16,7 +16,7 @@
 
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.compose.unit5.showImageFromInternet.repository_di.ui
+package com.example.compose.unit5.showImageFromInternet.repository_di.ui.theme
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -46,9 +46,10 @@ fun MarsPhotosApp() {
         topBar = { MarsTopAppBar(scrollBehavior = scrollBehavior) }
     ) {
         Surface(
-            modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize()
         ) {
-            val marsViewModel: MarsViewModel = viewModel()
+            val marsViewModel: MarsViewModel =
+                viewModel(factory = MarsViewModel.Factory)
             HomeScreen(
                 marsUiState = marsViewModel.marsUiState,
                 contentPadding = it
