@@ -15,7 +15,6 @@
  */
 package com.example.compose.unit5.showImageFromInternet.repository_di.ui.screens
 
-import com.example.compose.unit5.showImageFromInternet.repository_di.ui.data.NetworkMarsPhotosRepository
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -78,6 +77,7 @@ class MarsViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as MarsPhotosApplication)
+                /// ここでコンテナで定義した Repository を渡して、ViewModel で叩かせてあげるよ
                 val marsPhotosRepository = application.container.marsPhotosRepository
                 MarsViewModel(marsPhotosRepository = marsPhotosRepository)
             }
