@@ -130,7 +130,8 @@ interface Factory<T> {
 class LoginViewModelFactory(private val userRepository: UserRepository) : Factory
 ```
 
-Factory を実装するとなんやよくわからんけど、これで ViewModel に引数を渡すことができるみたいだ、原理は不明。。。謎い、、むずむずする。。
+Factory を実装するとなんやよくわからんけど、これで ViewModel に引数を渡すことができるみたい.
+理由はあれだけど、ファクトリー便利だよね、どうやってインスタンス化されるのかを、される側が握ってるし。
 
 AppContainer への実装方法と Activity からの呼び出し方法は以下
 
