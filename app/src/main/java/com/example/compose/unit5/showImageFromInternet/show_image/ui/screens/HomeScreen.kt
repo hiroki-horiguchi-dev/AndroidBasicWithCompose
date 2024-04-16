@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.compose.R
+import com.example.compose.ui.theme.WoofTheme
 import com.example.compose.unit5.showImageFromInternet.show_image.model.MarsPhoto
 
 @Composable
@@ -65,7 +67,6 @@ fun HomeScreen(
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.size(200.dp),
         painter = painterResource(R.drawable.loading_img),
         contentDescription = stringResource(R.string.loading)
     )
@@ -132,8 +133,15 @@ fun PhotosGridScreen(
         modifier = modifier.padding(horizontal = 4.dp),
         contentPadding = contentPadding,
     ) {
-        items(items = photos, key = { photo -> photo.id }) {
-            photo -> MarsPhotoCard(photo = photo)
+        /// アスペクト比調整のため
+        items(items = photos, key = { photo -> photo.id }) { photo ->
+            MarsPhotoCard(
+                photo,
+                modifier = modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f)
+            )
         }
     }
 }
@@ -153,8 +161,8 @@ fun ErrorScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 fun PhotosGridScreenPreview() {
-    MaterialTheme() {
+    MaterialTheme {
         val mockData = List(10) { MarsPhoto("$it", "") }
-        ResultScreen(stringResource(R.string.placeholder_success))
+        PhotosGridScreen(mockData)
     }
 }
