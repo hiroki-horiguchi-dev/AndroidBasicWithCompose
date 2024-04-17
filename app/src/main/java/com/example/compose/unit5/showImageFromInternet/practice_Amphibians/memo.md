@@ -83,3 +83,9 @@ FATAL EXCEPTION: main
 Process: com.example.compose, PID: 1729
 java.lang.RuntimeException: Unable to create application com.example.compose.unit5.showImageFromInternet.practice_Amphibians.AmphibiansApplication: java.lang.IllegalArgumentException: Expected URL scheme 'http' or 'https' but no scheme was found for 
 ```
+
+![img_6.png](img_6.png)
+
+こういうのを作って、Application クラスでこうやればいいじゃん！って発想では NG みたい。。
+
+![img_7.png](img_7.png)
