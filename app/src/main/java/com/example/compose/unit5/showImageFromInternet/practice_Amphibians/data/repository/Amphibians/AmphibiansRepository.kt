@@ -1,10 +1,8 @@
-package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository
+package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.Amphibians
 
 import Amphibians
-import AmphibiansApiService
+import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.Amphibians.AmphibiansApiService
 
-/// ぶっちゃけ、ここで interface を定義するメリットは API の数(AmphibiansApiService で定義する API 通信に用いる処理の数)が少ないなら無いと思う
-/// が、API のメソッドが増えれば増えるほど、当たり前に必要になってくるものでもある
 interface AmphibiansRepository {
     suspend fun fetchAmphibians(): List<Amphibians>
     suspend fun putNewAmphibians()
@@ -16,9 +14,10 @@ class NetworkAmphibiansRepository(
 ) : AmphibiansRepository {
     override suspend fun fetchAmphibians(): List<Amphibians> = amphibiansApiService.fetchAmphibians()
     override suspend fun putNewAmphibians() {
-        TODO("Example. @PUT")
+        TODO("Not yet implemented")
     }
+
     override suspend fun deleteAmphibians() {
-        TODO("Example. @DELETE")
+        TODO("Not yet implemented")
     }
 }

@@ -1,6 +1,6 @@
-import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.AnotherApiRepository
-import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.NetworkAnotherApiRepository
-import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.AnotherApiService
+import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.Another.AnotherApiRepository
+import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.Another.NetworkAnotherApiRepository
+import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.Another.AnotherApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

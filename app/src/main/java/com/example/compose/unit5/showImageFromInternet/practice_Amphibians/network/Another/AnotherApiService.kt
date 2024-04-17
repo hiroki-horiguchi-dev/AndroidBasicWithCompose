@@ -1,4 +1,4 @@
-package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network
+package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.Another
 
 import retrofit2.http.DELETE
 import retrofit2.http.GET

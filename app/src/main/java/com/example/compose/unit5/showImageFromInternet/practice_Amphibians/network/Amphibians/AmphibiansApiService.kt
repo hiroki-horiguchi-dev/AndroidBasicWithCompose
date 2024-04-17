@@ -1,7 +1,11 @@
+package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.Amphibians
+
+import Amphibians
 import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.PUT
 
 /// ここには Amphibians(https://android-kotlin-fun-mars-server.appspot.com) のドメインを使う API 通信のメソッドを定義する

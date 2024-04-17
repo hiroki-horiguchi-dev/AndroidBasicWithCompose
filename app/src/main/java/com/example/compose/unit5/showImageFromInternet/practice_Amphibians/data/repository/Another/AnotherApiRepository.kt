@@ -1,6 +1,6 @@
-package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository
+package com.example.compose.unit5.showImageFromInternet.practice_Amphibians.data.repository.Another
 
-import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.AnotherApiService
+import com.example.compose.unit5.showImageFromInternet.practice_Amphibians.network.Another.AnotherApiService
 
 interface AnotherApiRepository {
     suspend fun fetchAnotherApiData()
