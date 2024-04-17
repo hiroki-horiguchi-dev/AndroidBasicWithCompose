@@ -40,3 +40,46 @@ Android Studio がインストールされた、インターネットに接続�
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 ```
+
+### メモ
+
+実装するのは別に問題ないので、こういう場合はどうする？を考えてみた。。
+
+#### その１叩きたい API のドメインで以下のような区分があったらどうする？
+
+amphibians を商品情報として、そのほかにも API に色々なジャンル(区分)があるとしたらどうする？を考える。
+
+```text
+- android-kotlin-fun-mars-server.appspot.com
+    - 商品関連
+        - /amphibians
+        - /amphibians/
+    - お気に入り関連
+        - /amphibians/put (POST)
+        - /amphibians/delete
+    - ユーザー情報関連
+        - /login (POST)
+        - /logout (POST)
+    etc...
+```
+
+この場合は簡単で、以下のようにすれば良い
+1. ApiService, ApiRepository をそれぞれの関連領域について作成する
+   1. ![img_1.png](img_1.png)
+   2. ![img_3.png](img_3.png)
+   3. ![img_2.png](img_2.png)
+   4. ![img_4.png](img_4.png)
+2. 上記のようにして、AmphibiansApplication クラスで公開してる amphibiansContainer を介して ViewModel に適切な窓口を渡して通信させればいい。
+3. ![img_5.png](img_5.png)
+
+#### その2 叩きたい API のドメインが2種類以上あったらどうする？を考えてみた
+
+単純な発想で、Container にその都度追加して onCreate で初期化して公開したらいいじゃん！
+と思ったが、Application クラスを作れないよエラーでアプリが落ちるので NG 。。
+どうすればいいかな。。Dagger Hilt で解消できるんだっけ・・？
+
+```text
+FATAL EXCEPTION: main
+Process: com.example.compose, PID: 1729
+java.lang.RuntimeException: Unable to create application com.example.compose.unit5.showImageFromInternet.practice_Amphibians.AmphibiansApplication: java.lang.IllegalArgumentException: Expected URL scheme 'http' or 'https' but no scheme was found for 
+```
