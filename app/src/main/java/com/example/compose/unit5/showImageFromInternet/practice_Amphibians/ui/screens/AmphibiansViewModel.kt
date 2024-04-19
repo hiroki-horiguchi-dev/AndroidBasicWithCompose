@@ -1,3 +1,7 @@
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
@@ -9,11 +13,19 @@ import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.HttpException
 
+sealed interface AmphibiansApiState {
+    data class Success(val amphibians: List<Amphibians>) : AmphibiansApiState
+    object Error : AmphibiansApiState
+    object Loading : AmphibiansApiState
+}
 
 class AmphibiansViewModel(
     private val amphibiansRepository: AmphibiansRepository,
     private val amphibiansFavoriteRepository: AmphibiansFavoriteRepository
-): ViewModel() {
+) : ViewModel() {
+
+    var amphibiansUiState: AmphibiansApiState by mutableStateOf(AmphibiansApiState.Loading)
+        private set
 
     init {
         fetchAmphibiants()
@@ -21,13 +33,14 @@ class AmphibiansViewModel(
 
     fun fetchAmphibiants() {
         viewModelScope.launch {
-            try {
+            amphibiansUiState = try {
                 val result = amphibiansRepository.fetchAmphibians()
-                println("list is here: $result")
+                Log.d("AmphibiansViewModel", result.toString())
+                AmphibiansApiState.Success(result)
             } catch (e: IOException) {
-                println(e.toString())
+                AmphibiansApiState.Error
             } catch (e: HttpException) {
-                println(e.toString())
+                AmphibiansApiState.Error
             }
         }
     }
@@ -64,8 +77,13 @@ class AmphibiansViewModel(
             initializer {
                 val application = (this[APPLICATION_KEY] as AmphibiansApplication)
                 val amphibiansRepository = application.amphibiansContainer.amphibiansRepository
-                val amphibiansFavoriteRepository = application.amphibiansContainer.amphibiansFavoriteRepository
-                AmphibiansViewModel(amphibiansRepository = amphibiansRepository, amphibiansFavoriteRepository = amphibiansFavoriteRepository)
+                // こんな感じでお気に入りAPIがあった場合も ViewModel に渡せるね
+                val amphibiansFavoriteRepository =
+                    application.amphibiansContainer.amphibiansFavoriteRepository
+                AmphibiansViewModel(
+                    amphibiansRepository = amphibiansRepository,
+                    amphibiansFavoriteRepository = amphibiansFavoriteRepository
+                )
             }
         }
     }

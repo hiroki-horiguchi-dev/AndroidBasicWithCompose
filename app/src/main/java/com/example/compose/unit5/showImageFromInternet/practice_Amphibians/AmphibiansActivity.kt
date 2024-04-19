@@ -17,7 +17,7 @@ class AmphibiansActivity: ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    HomeScreen()
+//                    HomeScreen()
                 }
             }
         }
