@@ -24,7 +24,7 @@ class AmphibiansViewModel(
     private val amphibiansFavoriteRepository: AmphibiansFavoriteRepository
 ) : ViewModel() {
 
-    var amphibiansUiState: AmphibiansApiState by mutableStateOf(AmphibiansApiState.Loading)
+    var amphibiansApiState: AmphibiansApiState by mutableStateOf(AmphibiansApiState.Loading)
         private set
 
     init {
@@ -33,7 +33,7 @@ class AmphibiansViewModel(
 
     fun fetchAmphibiants() {
         viewModelScope.launch {
-            amphibiansUiState = try {
+            amphibiansApiState = try {
                 val result = amphibiansRepository.fetchAmphibians()
                 Log.d("AmphibiansViewModel", result.toString())
                 AmphibiansApiState.Success(result)

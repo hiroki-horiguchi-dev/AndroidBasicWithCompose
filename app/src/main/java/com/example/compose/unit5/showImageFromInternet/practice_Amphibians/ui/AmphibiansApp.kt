@@ -33,9 +33,9 @@ fun AmphibiansApp() {
             factory = AmphibiansViewModel.Factory
         )
         HomeScreen(
-            viewModel,
-            viewModel.amphibiansUiState,
-            it
+            amphibiansApiState = viewModel.amphibiansApiState,
+            retryAction = {},
+            contentPaddingValues = it
         )
     }
 }
