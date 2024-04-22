@@ -89,3 +89,102 @@ java.lang.RuntimeException: Unable to create application com.example.compose.uni
 こういうのを作って、Application クラスでこうやればいいじゃん！って発想では NG みたい。。
 
 ![img_7.png](img_7.png)
+
+
+### UI への繋ぎ込み
+
+#### Ui の階層
+
+- AmphibiansApp
+  - HomeScreen
+    - LoadingScreen
+    - ErrorScreen
+    - AmphibiansListScreen
+      - AmphibiansCard
+        - Card
+          - Column
+            - Text
+            - AsyncImage
+            - Text
+
+#### 各階層の役割
+
+- AmphibiansApp
+  - Scaffold
+    - topBar の設定
+      - modifier
+        - fillMaxSize を指定 
+    - Surface の設定
+      - modifier
+        - fillMaxSize, color を指定
+          - HomeScreen コンストラクタの呼び出し
+          - ViewModel の初期化、ViewModel から uiState を取得してコンストラクタへ渡す
+          - 各種アクション(リトライなど)の定義
+            - HomeScreen
+              - uiState で場合わけ
+                - LoadingScreen
+                - AmphibiansListScreen
+                  - modifier.padding と contentPadding のみ
+                    - LazyColumn
+                      - modifierなし、contentPading, verticalArrangement.spacedBy(24.dp)
+                        - AmphibianCard
+                          - Card
+                            - Column
+                              - Text
+                                - modifier.fillMaxWidth, padding, textAlign.Start
+                              - AsyncImage
+                                - contentScale.FillWidth
+                              - Text
+                                - modifier.padding, TextAlign.justify
+            - ErrorScreen (特に書くことなし)
+            - LoadingScreen (特に書くことなし)
+
+## 成果
+
+![img_8.png](img_8.png)
+
+親コンポーネントは fillMaxSize しか Modifier では指定してないよっと。
+Text とかの揃えは大体 padding でどうにかできてるみたいだよっと。
+
+```kotlin
+@Composable
+private fun AmphibiansCardScreen(amphibian: Amphibians, modifier: Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.amphibian_title, amphibian.name, amphibian.type),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_medium)),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start
+            )
+
+            AsyncImage(
+                modifier = modifier.fillMaxWidth(),
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(amphibian.imsSrc)
+                    .crossfade(true)
+                    .build(),
+                error = painterResource(id = R.drawable.ic_broken_image),
+                placeholder = painterResource(id = R.drawable.loading_img),
+                contentDescription = amphibian.name,
+                contentScale = ContentScale.Fit,
+            )
+
+            Text(
+                text = amphibian.description,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+            )
+        }
+    }
+}
+```

@@ -83,14 +83,14 @@ private fun AmphibiansCardScreen(amphibian: Amphibians, modifier: Modifier) {
                 error = painterResource(id = R.drawable.ic_broken_image),
                 placeholder = painterResource(id = R.drawable.loading_img),
                 contentDescription = amphibian.name,
-                contentScale = ContentScale.FillWidth,
+                contentScale = ContentScale.Fit,
             )
 
             Text(
                 text = amphibian.description,
                 fontSize = 12.sp,
                 textAlign = TextAlign.Justify,
-                modifier = Modifier.padding(horizontal = 8.dp).padding(dimensionResource(R.dimen.padding_medium))
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
             )
         }
     }
