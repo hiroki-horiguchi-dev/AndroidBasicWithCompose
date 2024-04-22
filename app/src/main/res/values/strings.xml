@@ -150,4 +150,7 @@
     <string name="loading">Loading</string>
     <string name="mars_photo">Mars photo</string>
     <string name="placeholder_success">Placeholder text</string>
+
+    /// Practice: Amphibians
+    <string name="amphibian_title">%s (%s)</string>
 </resources>
