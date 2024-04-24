@@ -96,7 +96,7 @@ java.lang.RuntimeException: Unable to create application com.example.compose.uni
 #### Ui の階層
 
 - AmphibiansApp
-  - HomeScreen
+  - com.example.compose.unit5.showImageFromInternet.bookshelf.ui.screen.HomeScreen
     - LoadingScreen
     - ErrorScreen
     - AmphibiansListScreen
@@ -117,10 +117,10 @@ java.lang.RuntimeException: Unable to create application com.example.compose.uni
     - Surface の設定
       - modifier
         - fillMaxSize, color を指定
-          - HomeScreen コンストラクタの呼び出し
+          - com.example.compose.unit5.showImageFromInternet.bookshelf.ui.screen.HomeScreen コンストラクタの呼び出し
           - ViewModel の初期化、ViewModel から uiState を取得してコンストラクタへ渡す
           - 各種アクション(リトライなど)の定義
-            - HomeScreen
+            - com.example.compose.unit5.showImageFromInternet.bookshelf.ui.screen.HomeScreen
               - uiState で場合わけ
                 - LoadingScreen
                 - AmphibiansListScreen
