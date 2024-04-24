@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class BookDetail(
     val id: String,
-    val volumeInfo: VolumeInfo
+    val volumeInfo: VolumeInfo?
 )
 
 @Serializable
@@ -15,13 +15,13 @@ data class VolumeInfo(
     val publisher: String,
     val publishedDate: String,
     val description: String,
-    val imageLinks: ImageLinks
+    val imageLinks: ImageLinks? = null
 )
 
 @Serializable
 data class ImageLinks(
-    val smallThumbnail: String,
-    val thumbnail: String,
-    val small: String,
-    val medium: String
+    val smallThumbnail: String? = null,
+    val thumbnail: String? = null,
+    val small: String? = null,
+    val medium: String? = null
 )
