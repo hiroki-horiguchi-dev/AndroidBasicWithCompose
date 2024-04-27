@@ -36,11 +36,10 @@ fun BookShelfApp(
         )
         BookShelfHomeScreen(
             viewModel.bookshelfApiState,
-            retryAction = {},
+            retryAction = viewModel::fetchBookShelf,
             contentPaddingValues = it,
             modifier
         )
-
     }
 }
 

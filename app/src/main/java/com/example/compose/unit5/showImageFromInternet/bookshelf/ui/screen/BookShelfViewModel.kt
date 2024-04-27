@@ -33,7 +33,7 @@ class BookShelfViewModel(
         private set
 
     /// 解法1
-    private fun fetchBookShelf() {
+    fun fetchBookShelf() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 bookShelfRepository.fetchBooks("jazz+history").items
