@@ -17,7 +17,7 @@ class AmphibiansActivity: ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-//                    HomeScreen()
+//                    com.example.compose.unit5.showImageFromInternet.bookshelf.ui.screen.HomeScreen()
                 }
             }
         }
