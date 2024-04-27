@@ -1,4 +1,5 @@
 import com.example.compose.unit5.showImageFromInternet.bookshelf.model.book_detail.BookDetail
+import com.example.compose.unit5.showImageFromInternet.bookshelf.model.books.BookShelf
 
 
 interface BookShelfRepository {
